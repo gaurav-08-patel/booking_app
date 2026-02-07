@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@layer utilities {
+    .container {
+        @media (width >= 96rem /* 1536px */) {
+            max-width: 80rem /* 1536px */;
+        }
+    }
+}
