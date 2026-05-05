@@ -18,9 +18,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.get("/api/test", (req, res) => {
-    res.json({ message: "hello from test route." });
-});
+import userRoutes from "./routes/user.routes.js";
+
+app.use("/user", userRoutes);
 
 app.listen(3000, () => {
     console.log(`Server running on PORT 3000`);
