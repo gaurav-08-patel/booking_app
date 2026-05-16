@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../model/user.model.js";
+import jwt from 'jsonwebtoken';
 
 export const registerUser = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
@@ -27,7 +28,23 @@ export const registerUser = async (req, res) => {
             password: hashedPassword,
         });
 
-        user.save();
+        await user.save();
+
+        let token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET,{
+            expiresIn: "15d",
+        });
+
+        res.cookie("auth_token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 15 * 24 * 60 * 60 * 1000,
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "User registered successfully.",
+        });
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({

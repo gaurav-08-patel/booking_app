@@ -20,7 +20,7 @@ app.use(cors());
 
 import userRoutes from "./routes/user.routes.js";
 
-app.use("/user", userRoutes);
+app.use("/api/user", userRoutes);
 
 app.listen(3000, () => {
     console.log(`Server running on PORT 3000`);
