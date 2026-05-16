@@ -19,8 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 import userRoutes from "./routes/user.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(3000, () => {
     console.log(`Server running on PORT 3000`);
