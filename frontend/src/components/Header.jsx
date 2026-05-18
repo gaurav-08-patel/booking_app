@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toast";
 
 const Header = () => {
     let { isLoggedIn } = useAppContext();
@@ -22,6 +23,7 @@ const Header = () => {
     let mutation = useMutation({
         mutationFn: handleSignOut,
         onSuccess: () => {
+            toast("You are signed out", { backgroundColor: "#00CF00" });
             queryClient.invalidateQueries(["validateToken"]);
         },
     });
