@@ -1,13 +1,12 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toast";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
 
 const Register = () => {
-    
-    
+    let queryClient = useQueryClient();
     let navigate = useNavigate();
     const registerUser = async (formData) => {
         let response = await fetch(
@@ -38,6 +37,8 @@ const Register = () => {
                 color: "white",
             });
             navigate("/");
+            //invalidating my previous query to get new data(new status if user is logged in or not)
+            queryClient.invalidateQueries(["validateToken"]);
         },
         onError: (error) => {
             toast(error.message, {
