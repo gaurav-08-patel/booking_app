@@ -1,7 +1,49 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toast";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+    let navigate = useNavigate();
+    const registerUser = async (formData) => {
+        let response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/api/user/register`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+                credentials: "include",
+            },
+        );
+        let responseBody = await response.json();
+
+        if (!response.ok) {
+            throw new Error(responseBody.message);
+        }
+
+        return responseBody;
+    };
+
+    let mutation = useMutation({
+        mutationFn: registerUser,
+        onSuccess: (data) => {
+            toast(data.message, {
+                backgroundColor: "#00CF00",
+                color: "white",
+            });
+            navigate("/");
+        },
+        onError: (error) => {
+            toast(error.message, {
+                backgroundColor: "#FF2C2C",
+                color: "white",
+            });
+        },
+    });
+
     let {
         register,
         watch,
@@ -10,8 +52,9 @@ const Register = () => {
     } = useForm();
 
     const onSubmit = (data) => {
-        console.log(data);
+        mutation.mutate(data);
     };
+
     return (
         <div className=" flex flex-col gap-5 p-2">
             <h1 className="text-4xl font-semibold">Create an Account</h1>
@@ -110,7 +153,10 @@ const Register = () => {
 
                 <div className="flex justify-between">
                     <p className="text-slate-600">
-                        Already have an account ? <Link className="underline text-fuchsia-600">Sign in</Link>
+                        Already have an account ?{" "}
+                        <Link className="underline text-fuchsia-600">
+                            Sign in
+                        </Link>
                     </p>
                     <button
                         type="submit"
