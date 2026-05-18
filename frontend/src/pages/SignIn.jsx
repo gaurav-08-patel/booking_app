@@ -1,15 +1,60 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toast";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+    let navigate = useNavigate();
+    let queryClient = useQueryClient();
+
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm();
 
+    const loginUser = async (data) => {
+        let response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/api/auth/login`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+                credentials: "include",
+            },
+        );
+
+        let responseBody = await response.json();
+        if (!response.ok) {
+            throw new Error(responseBody.message);
+        }
+
+        return responseBody;
+    };
+
+    const mutation = useMutation({
+        mutationFn: loginUser,
+        onSuccess: async (data) => {
+            toast(data.message, {
+                backgroundColor: "#00CF00",
+                color: "white",
+            });
+            await queryClient.refetchQueries(["validateToken"]);
+            navigate("/");
+        },
+        onError: (error) => {
+            toast(error.message, {
+                backgroundColor: "#FF2C2C",
+                color: "white",
+            });
+        },
+    });
+
     const onSubmit = (data) => {
-        console.log(data);
+        mutation.mutate(data);
     };
 
     return (
@@ -37,7 +82,7 @@ const SignIn = () => {
                 <label className="font-semibold flex flex-col gap-1 flex-1">
                     Password
                     <input
-                        type="text"
+                        type="password"
                         {...register("password", {
                             required: "Password is required",
                         })}
