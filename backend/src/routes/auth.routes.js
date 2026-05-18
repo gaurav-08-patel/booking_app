@@ -10,4 +10,10 @@ router.get("/validateToken", verifyToken, (req, res) => {
     res.status(200).json({ success: true, userId: req.userId });
 });
 
+router.post("/logout", (req, res) => {
+    res.clearCookie("auth_token")
+        .status(200)
+        .json({ success: true, message: "Logout successful." });
+});
+
 export default router;
