@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toast";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../contexts/AppContext";
 
 const Register = () => {
+    
+    
     let navigate = useNavigate();
     const registerUser = async (formData) => {
         let response = await fetch(
