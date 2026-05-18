@@ -1,8 +1,30 @@
 import { Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Header = () => {
     let { isLoggedIn } = useAppContext();
+    let queryClient = useQueryClient();
+
+    const handleSignOut = async () => {
+        let response = await fetch(
+            `${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`,
+            {
+                method: "POST",
+                credentials: "include",
+            },
+        );
+
+        if (!response.ok) throw new Error(response.message);
+        return;
+    };
+
+    let mutation = useMutation({
+        mutationFn: handleSignOut,
+        onSuccess: () => {
+            queryClient.invalidateQueries(["validateToken"]);
+        },
+    });
 
     return (
         <div className="bg-blue-800 py-6 p-1">
@@ -14,18 +36,20 @@ const Header = () => {
                 <span className="flex space-x-2">
                     {isLoggedIn ? (
                         <>
-                            <Link
-                                to={"profile"}
-                                className="bg-white flex items-center text-blue-600 font-semibold hover:bg-gray-100 px-1"
-                            >
+                            <Link className="bg-white flex items-center text-blue-600 font-semibold hover:bg-gray-100 px-1">
                                 My Hotels
                             </Link>
-                            <Link
-                                to={"logout"}
-                                className="bg-white flex items-center text-blue-600 font-semibold hover:bg-gray-100 px-1"
-                            >
+                            <Link className="bg-white flex items-center text-blue-600 font-semibold hover:bg-gray-100 px-1">
                                 My Bookings
                             </Link>
+                            <span
+                                className="bg-white flex items-center text-blue-600 font-semibold hover:bg-gray-100 px-1 cursor-pointer"
+                                onClick={() => {
+                                    mutation.mutate();
+                                }}
+                            >
+                                Sign Out
+                            </span>
                         </>
                     ) : (
                         <Link
