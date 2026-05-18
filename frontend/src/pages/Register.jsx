@@ -60,7 +60,7 @@ const Register = () => {
     };
 
     return (
-        <div className=" flex flex-col gap-5 p-2">
+        <div className=" flex flex-col gap-5 p-2 mx-auto max-w-lg">
             <h1 className="text-4xl font-semibold">Create an Account</h1>
             <form
                 className="flex flex-col gap-2 mb-12"
@@ -158,7 +158,7 @@ const Register = () => {
                 <div className="flex justify-between">
                     <p className="text-slate-600">
                         Already have an account ?{" "}
-                        <Link className="underline text-fuchsia-600">
+                        <Link className="underline text-fuchsia-600" to={'/signin'}>
                             Sign in
                         </Link>
                     </p>
