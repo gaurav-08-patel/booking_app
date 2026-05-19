@@ -44,14 +44,14 @@ const Header = () => {
                             <Link className="bg-white flex items-center text-blue-600 font-semibold hover:bg-gray-100 px-1">
                                 My Bookings
                             </Link>
-                            <span
+                            <button
                                 className="bg-white flex items-center text-blue-600 font-semibold hover:bg-gray-100 px-1 cursor-pointer"
                                 onClick={() => {
                                     mutation.mutate();
                                 }}
                             >
                                 Sign Out
-                            </span>
+                            </button>
                         </>
                     ) : (
                         <Link
