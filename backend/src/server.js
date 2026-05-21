@@ -26,9 +26,11 @@ app.use(
 
 import userRoutes from "./routes/user.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import hotelRoutes from "./routes/hotel.routes.js";
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api", hotelRoutes);
 
 app.listen(3000, () => {
     console.log(`Server running on PORT 3000`);
