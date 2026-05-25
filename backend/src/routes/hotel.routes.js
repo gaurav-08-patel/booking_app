@@ -1,6 +1,7 @@
 import express from "express";
 let router = express.Router();
 import multer from "multer";
+import { registerHotel } from "../controllers/hotel.controller";
 
 let storage = multer.memoryStorage();
 
@@ -9,7 +10,4 @@ let upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-router.post("/upload", (req, res) => {
-   
-    res.send("test route");
-});
+router.post("/upload", upload.array("images",6) , registerHotel );
