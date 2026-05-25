@@ -30,7 +30,7 @@ import hotelRoutes from "./routes/hotel.routes.js";
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api", hotelRoutes);
+app.use("/api/myHotels", hotelRoutes);
 
 app.listen(3000, () => {
     console.log(`Server running on PORT 3000`);
