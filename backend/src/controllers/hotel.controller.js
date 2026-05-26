@@ -1,4 +1,5 @@
 import cloudinary from "../../cloudinary.js";
+import Hotel from '../model/hotel.model.js';
 
 export const registerHotel = async (req, res) => {
     async function uploadToCloudinary(fileBuffer) {
