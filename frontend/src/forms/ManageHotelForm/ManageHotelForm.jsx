@@ -25,9 +25,9 @@ const ManageHotelForm = () => {
                 <ImagesSection/>
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white font-semibold py-2 px-4 rounded"
+                    className="bg-blue-500 text-white font-semibold py-2 px-4 rounded cursor-pointer hover:bg-blue-600"
                 >
-                    Submit
+                    Save
                 </button>
             </form>
         </FormProvider>
