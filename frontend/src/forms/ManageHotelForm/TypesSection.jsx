@@ -16,6 +16,7 @@ const TypesSection = () => {
                 {hotelTypes.map((type) => (
                     <label
                         className={`${typeWatch === type ? "bg-blue-300" : "bg-gray-300"} cursor-pointer flex items-center rounded-full px-4 py-2`}
+                        key={type}
                     >
                         <input
                             type="radio"
