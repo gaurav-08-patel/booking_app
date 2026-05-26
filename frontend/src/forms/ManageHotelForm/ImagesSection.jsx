@@ -9,7 +9,7 @@ const ImagesSection = () => {
     return (
         <div>
             <h2 className="text-2xl font-semibold mb-3">Images</h2>
-            <div className="border p-3 border-gray-300">
+            <div className="flex border p-3 border-dashed border-gray-300 max-sm:flex-col">
                 <input
                     type="file"
                     accept="image/*"
