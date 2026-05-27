@@ -97,7 +97,7 @@ export const registerHotel = async (req, res) => {
 
 export const getHotels = async (req, res) => {
     try {
-        const hotels = await Hotel.find({ userId: req.userId });
+        const hotels = await Hotel.find({ userId: req.userId }).sort({ lastUpdated: -1 });
         res.status(200).json(hotels);
     } catch (error) {
         console.log(error.message);
