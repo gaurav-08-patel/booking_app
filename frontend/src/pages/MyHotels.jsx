@@ -77,7 +77,7 @@ const MyHotels = () => {
                                     {data.childCount} child
                                 </span>
                                 <span className="flex items-center gap-2 border border-slate-400 px-2 py-1 rounded text-[12px] text-gray-700">
-                                    <FaStar /> {data.starRating} start rating
+                                    <FaStar /> {data.starRating} star rating
                                 </span>
                             </div>
                             <span className="flex justify-end">
