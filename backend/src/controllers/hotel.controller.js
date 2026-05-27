@@ -1,5 +1,5 @@
 import cloudinary from "../../cloudinary.js";
-import Hotel from '../model/hotel.model.js';
+import Hotel from "../model/hotel.model.js";
 
 export const registerHotel = async (req, res) => {
     async function uploadToCloudinary(fileBuffer) {
@@ -86,6 +86,19 @@ export const registerHotel = async (req, res) => {
             message: "Hotel registered successfully.",
             hotel: newHotel,
         });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error.",
+        });
+    }
+};
+
+export const getHotels = async (req, res) => {
+    try {
+        const hotels = await Hotel.find({ userId: req.userId });
+        res.status(200).json(hotels);
     } catch (error) {
         console.log(error.message);
         res.status(500).json({
