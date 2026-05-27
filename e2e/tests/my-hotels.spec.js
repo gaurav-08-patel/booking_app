@@ -47,7 +47,7 @@ test("should allow user to addHotel", async ({ page }) => {
     await page.locator("input[name='adultCount']").fill("2");
     await page.locator("input[name='childCount']").fill("1");
     await page.setInputFiles("input[name='images']", [
-        path.join(__dirname, "files", "1.png")
+        path.join(__dirname, "files", "1.png"),
     ]);
 
     await page.getByRole("button", { name: "Save" }).click();
@@ -61,4 +61,17 @@ test("should allow user to addHotel", async ({ page }) => {
     await expect(page.getByText("Hotel registered successfully.")).toBeVisible({
         timeout: 5000,
     });
+});
+
+test("should allow user to view hotels", async ({ page }) => {
+    await page.goto(UI_URL + "/myHotels");
+    await expect(
+        page.getByRole("heading", { name: "My Hotels" }),
+    ).toBeVisible();
+    await expect(page.getByText("Everest Hotel").first()).toBeVisible();
+    await expect(page.getByText("Birgunj, Nepal")).toBeVisible();
+    await expect(page.getByText(/Resort/).first()).toBeVisible();
+    await expect(page.getByText("$2222 per night").first()).toBeVisible();
+    await expect(page.getByText("3 adults, 3 child").first()).toBeVisible();
+    await expect(page.getByText("3 star rating").first()).toBeVisible();
 });
