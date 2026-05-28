@@ -4,10 +4,14 @@ import TypesSection from "./TypesSection";
 import FacilitiesSection from "./FacilitiesSection";
 import GuestSection from "./GuestsSection";
 import ImagesSection from "./ImagesSection";
+import { useEffect } from "react";
 
-const ManageHotelForm = ({ onSave, isLoading }) => {
+const ManageHotelForm = ({ onSave, isLoading, hotel }) => {
     const formMethods = useForm();
 
+    useEffect(() => {
+        formMethods.reset(hotel);
+    }, [hotel]);
 
     const onSubmit = (data) => {
         const formData = new FormData();
@@ -20,17 +24,15 @@ const ManageHotelForm = ({ onSave, isLoading }) => {
         formData.append("type", data.type);
         formData.append("adultCount", data.adultCount);
         formData.append("childCount", data.childCount);
-        
+
         data.facilities.forEach((facility) => {
             formData.append("facilities", facility);
         });
-        
+
         Array.from(data.images).forEach((image) => {
             formData.append("images", image);
         });
-        
-        
-        console.log(formData);
+
         onSave(formData);
     };
 
