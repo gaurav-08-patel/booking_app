@@ -2,8 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import ManageHotelForm from "../forms/ManageHotelForm/ManageHotelForm";
 import { toast } from "react-toast";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddHotel = () => {
+    const navigate = useNavigate();
     let [ isLoading, setIsLoading ] = useState(false);
     const addMyHotel = async (formData) => {
         setIsLoading(true);
@@ -30,6 +32,7 @@ const AddHotel = () => {
                 backgroundColor: "#00CF00",
                 color: "white",
             });
+            navigate("/myHotels");
         },
         onError: (error) => {
             toast("Something went wrong", {
