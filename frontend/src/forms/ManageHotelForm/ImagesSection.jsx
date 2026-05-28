@@ -8,7 +8,7 @@ const ImagesSection = () => {
         setValue,
     } = useFormContext();
 
-    const existingImageUrls = watch("imageUrls");
+    const existingImageUrls = watch("imageUrls") || [];
 
     function handleDeleteImage(url) {
         setValue(
