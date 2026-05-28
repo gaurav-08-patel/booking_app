@@ -33,6 +33,10 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }) => {
             formData.append("images", image);
         });
 
+        data.imageUrls?.forEach((imageUrl) => {
+            formData.append("imageUrls", imageUrl);
+        });
+
         onSave(formData);
     };
 

@@ -98,7 +98,7 @@ export const registerHotel = async (req, res) => {
 export const getHotels = async (req, res) => {
     try {
         const hotels = await Hotel.find({ userId: req.userId }).sort({
-            lastUpdated: -1,
+            updatedAt: -1,
         });
         res.status(200).json(hotels);
     } catch (error) {
@@ -122,4 +122,21 @@ export const getHotelById = async (req, res) => {
             message: "Internal server error.",
         });
     }
+};
+
+export const updateHotel = async (req, res) => {
+    const hotelId = req.params.hotelId;
+    const updatedHotelData = req.body;
+
+    if (req.files && req.files.length > 0) {
+        const imageFiles = req.files;
+        const imageUrls = await Promise.all(
+            imageFiles.map((file) => uploadToCloudinary(file.buffer)),
+        );
+        updatedHotelData.imageUrls.push(...imageUrls);
+    }
+
+    await Hotel.findByIdAndUpdate({ _id: hotelId }, updatedHotelData);
+
+    res.status(200).json({ success: true });
 };
