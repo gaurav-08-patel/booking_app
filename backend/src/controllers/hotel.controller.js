@@ -97,8 +97,24 @@ export const registerHotel = async (req, res) => {
 
 export const getHotels = async (req, res) => {
     try {
-        const hotels = await Hotel.find({ userId: req.userId }).sort({ lastUpdated: -1 });
+        const hotels = await Hotel.find({ userId: req.userId }).sort({
+            lastUpdated: -1,
+        });
         res.status(200).json(hotels);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error.",
+        });
+    }
+};
+
+export const getHotelById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const hotel = await Hotel.findById({ _id: id });
+        res.status(200).json(hotel);
     } catch (error) {
         console.log(error.message);
         res.status(500).json({
