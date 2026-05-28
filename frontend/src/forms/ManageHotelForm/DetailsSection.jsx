@@ -1,13 +1,22 @@
 import { useFormContext } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 
 const DetailsSection = () => {
     const {
         register,
         formState: { errors },
     } = useFormContext();
+
+    const location = useLocation();
+
     return (
         <div className="flex flex-col gap-5">
-            <h1 className="text-3xl font-bold">Add Hotel</h1>
+            {/* {making heading dynamic based on the page} */}
+            <h1 className="text-3xl font-bold">
+                {location.pathname.includes("/editHotel")
+                    ? "Edit Hotel"
+                    : "Add Hotel"}
+            </h1>
             <div className="flex flex-col gap-3">
                 <label className="font-semibold flex flex-col gap-0.5 flex-1">
                     Name
