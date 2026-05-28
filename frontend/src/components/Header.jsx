@@ -31,7 +31,7 @@ const Header = () => {
     return (
         <div className="bg-blue-800 py-6 p-1">
             <div className="container mx-auto flex justify-between ">
-                <Link className="text-2xl text-white font-bold tracking-tight">
+                <Link className="text-2xl text-white font-bold tracking-tight" to={"/"}>
                     Mernholidays.com
                 </Link>
 
