@@ -49,49 +49,51 @@ const MyHotels = () => {
                 </Link>
             </span>
             <div className="flex flex-col gap-5">
-                {data && !isLoading ? (
-                    data.map((data) => (
+                {isLoading ? (
+                    <p className="text-center">Loading...</p>
+                ) : data && data.length > 0 ? (
+                    data.map((hotel) => (
                         <div
-                            key={data._id}
+                            key={hotel._id}
                             className="border border-slate-400 p-4 rounded space-y-3"
                         >
                             <h2 className="text-2xl font-semibold">
-                                {data.name}
+                                {hotel.name}
                             </h2>
-                            <p className=" text-sm text-gray-700">
-                                {data.description}
+                            <p className="text-sm text-gray-700">
+                                {hotel.description}
                             </p>
+
                             <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2">
                                 <span className="flex items-center gap-2 border border-slate-400 px-2 py-1 rounded text-[12px] text-gray-700">
-                                    <CiMap /> {data.city}, {data.country}
+                                    <CiMap /> {hotel.city}, {hotel.country}
                                 </span>
                                 <span className="flex items-center gap-2 border border-slate-400 px-2 py-1 rounded text-[12px] text-gray-700">
-                                    <FaBuilding /> {data.type}
+                                    <FaBuilding /> {hotel.type}
                                 </span>
                                 <span className="flex items-center gap-2 border border-slate-400 px-2 py-1 rounded text-[12px] text-gray-700">
-                                    <FaMoneyBillWave /> ${data.pricePerNight}{" "}
+                                    <FaMoneyBillWave /> ${hotel.pricePerNight}{" "}
                                     per night
                                 </span>
                                 <span className="flex items-center gap-2 border border-slate-400 px-2 py-1 rounded text-[12px] text-gray-700">
-                                    <FaBed /> {data.adultCount} adults,{" "}
-                                    {data.childCount} child
+                                    <FaBed /> {hotel.adultCount} adults,{" "}
+                                    {hotel.childCount} child
                                 </span>
                                 <span className="flex items-center gap-2 border border-slate-400 px-2 py-1 rounded text-[12px] text-gray-700">
-                                    <FaStar /> {data.starRating} star rating
+                                    <FaStar /> {hotel.starRating} star rating
                                 </span>
                             </div>
+
                             <span className="flex justify-end">
                                 <Link
                                     className="p-2 bg-blue-600 text-white font-semibold"
-                                    to={`/editHotel/${data._id}`}
+                                    to={`/editHotel/${hotel._id}`}
                                 >
                                     View Details
                                 </Link>
                             </span>
                         </div>
                     ))
-                ) : isLoading ? (
-                    <p className="text-center">Loading...</p>
                 ) : (
                     <p className="text-center">No hotels found</p>
                 )}
