@@ -140,3 +140,29 @@ export const updateHotel = async (req, res) => {
 
     res.status(200).json({ success: true });
 };
+
+export const searchHotels = async (req, res) => {
+    try {
+        const pageSize = 6;
+        const pageNumber = parseInt(req.query.page) || 1;
+        const skip = (pageNumber - 1) * pageSize;
+
+        const hotels = await Hotel.find({}).skip(skip).limit(pageSize);
+
+        const totalPages = Math.ceil((await Hotel.countDocuments()) / pageSize);
+
+        res.status(200).json({
+            data: hotels,
+            pagination: {
+                currentPage: pageNumber,
+                totalPages,
+            },
+        });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error.",
+        });
+    }
+};

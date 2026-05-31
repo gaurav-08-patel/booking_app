@@ -1,7 +1,13 @@
 import express from "express";
 let router = express.Router();
 import multer from "multer";
-import { getHotelById, getHotels, registerHotel, updateHotel } from "../controllers/hotel.controller.js";
+import {
+    getHotelById,
+    getHotels,
+    registerHotel,
+    searchHotels,
+    updateHotel,
+} from "../controllers/hotel.controller.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import Hotel from "../model/hotel.model.js";
 
@@ -13,10 +19,19 @@ let upload = multer({
 });
 
 router.post("/upload", verifyToken, upload.array("images", 6), registerHotel);
-router.put("/update/:hotelId", verifyToken, upload.array("images", 6), updateHotel);
+router.put(
+    "/update/:hotelId",
+    verifyToken,
+    upload.array("images", 6),
+    updateHotel,
+);
 
 router.get("/", verifyToken, getHotels);
 
 router.get("/:id", verifyToken, getHotelById);
+
+// to search hotels
+
+router.get("/search", searchHotels);
 
 export default router;
