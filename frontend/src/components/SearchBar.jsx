@@ -3,9 +3,16 @@ import { useSearchContext } from "../contexts/SearchContext";
 import { FaGlobeAmericas } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "/node_modules/react-datepicker/dist/react-datepicker.css";
+import { useLocation } from "react-router-dom";
 
 const SearchBar = () => {
     const search = useSearchContext();
+    const location = useLocation();
+
+    let showBanner =
+        location.pathname === "/" || location.pathname === "/search"
+            ? true
+            : false;
 
     const [destination, setDestination] = useState(search.destination);
     const [checkIn, setCheckIn] = useState(search.checkIn);
@@ -14,7 +21,7 @@ const SearchBar = () => {
     const [childCount, setChildCount] = useState(search.childCount);
 
     return (
-        <form className="w-full bg-orange-400  rounded shadow-md p-3 grid grid-cols-[repeat(5,minmax(150px,1fr))] max-lg:grid-cols-[repeat(3,minmax(150px,1fr))] gap-2 max-md:grid-cols-[repeat(2,minmax(150px,1fr))]">
+        <form className={`${showBanner ? "grid" : "hidden"} w-full bg-orange-400  rounded shadow-md p-3 grid-cols-[repeat(5,minmax(150px,1fr))] max-lg:grid-cols-[repeat(3,minmax(150px,1fr))] gap-2 max-md:grid-cols-[repeat(2,minmax(150px,1fr))]`}>
             <div className="bg-white p-2 flex gap-1">
                 <span>
                     <FaGlobeAmericas size={25} />
@@ -36,7 +43,6 @@ const SearchBar = () => {
                         className="focus:outline-none text-black font-bold"
                         max={20}
                         min={1}
-                        defaultValue={1}
                         value={adultCount}
                         onChange={(e) => {
                             setAdultCount(Number(e.target.value));
@@ -50,7 +56,6 @@ const SearchBar = () => {
                         className="focus:outline-none text-black font-bold"
                         min={0}
                         max={20}
-                        defaultValue={0}
                         value={childCount}
                         onChange={(e) => {
                             setChildCount(Number(e.target.value));
