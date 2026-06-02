@@ -5,7 +5,6 @@ import {
     getHotelById,
     getHotels,
     registerHotel,
-    searchHotels,
     updateHotel,
 } from "../controllers/hotel.controller.js";
 import { verifyToken } from "../middleware/verifyToken.js";
@@ -30,8 +29,5 @@ router.get("/", verifyToken, getHotels);
 
 router.get("/:id", verifyToken, getHotelById);
 
-// to search hotels
-
-router.get("/search", searchHotels);
 
 export default router;
