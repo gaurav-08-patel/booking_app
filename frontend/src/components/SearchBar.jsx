@@ -3,11 +3,12 @@ import { useSearchContext } from "../contexts/SearchContext";
 import { FaGlobeAmericas } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "/node_modules/react-datepicker/dist/react-datepicker.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
     const search = useSearchContext();
     const location = useLocation();
+    const navigate = useNavigate();
 
     let showBanner =
         location.pathname === "/" || location.pathname === "/search"
@@ -109,6 +110,7 @@ const SearchBar = () => {
                             adultCount,
                             childCount,
                         );
+                        navigate("/search");
                     }}
                 >
                     Search
