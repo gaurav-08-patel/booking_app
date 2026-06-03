@@ -152,10 +152,11 @@ export const searchHotels = async (req, res) => {
         const totalPages = Math.ceil((await Hotel.countDocuments()) / pageSize);
 
         res.status(200).json({
-            data: hotels,
+            hotels,
             pagination: {
                 currentPage: pageNumber,
                 totalPages,
+                totalHotels: await Hotel.countDocuments(),
             },
         });
     } catch (error) {
