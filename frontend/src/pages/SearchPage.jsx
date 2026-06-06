@@ -14,6 +14,7 @@ const SearchPage = () => {
         selectedFacilities: [],
         maxPrice: null,
     });
+    const [sortOption, setSortOprtion] = useState(null);
 
     //to make sure the page is reset when the search is changed
     useEffect(() => setPage(1), [search]);
@@ -48,6 +49,10 @@ const SearchPage = () => {
         searchParams.append("maxPrice", filters.maxPrice);
     }
 
+    if (sortOption) {
+        searchParams.append("sortOption", sortOption);
+    }
+
     async function searchHotels(searchParams) {
         let response = await fetch(
             `${import.meta.env.VITE_API_BASE_URL}/api/hotel/search?${searchParams}`,
@@ -58,19 +63,32 @@ const SearchPage = () => {
     }
 
     const { data, isLoading } = useQuery({
-        queryKey: ["searchHotels", search, page, filters],
+        queryKey: ["searchHotels", search, page, filters, sortOption],
         queryFn: () => searchHotels(searchParams),
     });
 
     return (
         <div className="grid grid-cols-[250px_1fr] max-md:grid-cols-1 gap-5 p-2 ">
-            <SearchFilters filters={filters} setFilters={setFilters}/>
+            <SearchFilters filters={filters} setFilters={setFilters} />
             <div className="flex flex-col gap-1">
                 <div className="flex justify-between items-center mb-3 border-b border-slate-300 pb-1">
                     <div className="text-lg font-bold ">
                         {data?.pagination.totalHotels} hotels found{" "}
                         {search.destination ? `in ${search.destination}` : ""}
                     </div>
+                    <select
+                        onChange={(e) => setSortOprtion(e.target.value)}
+                        className="font-normal border border-gray-400 rounded px-3 py-1.5 focus:outline-none focus:ring-1"
+                    >
+                        <option value="">Sort By</option>
+                        <option value="starRating">Star Rating</option>
+                        <option value="priceLowToHigh">
+                            Price Per Night(low to high)
+                        </option>
+                        <option value="priceHighToLow">
+                            Price Per Night(high to low)
+                        </option>
+                    </select>
                 </div>
                 <div className="flex flex-col gap-2">
                     {isLoading ? (
