@@ -29,7 +29,6 @@ const SearchPage = () => {
         queryKey: ["searchHotels", searchParams, page],
         queryFn: () => searchHotels(searchParams),
     });
-    console.log(data);
 
     return (
         <div className="grid grid-cols-[250px_1fr] max-md:grid-cols-1 gap-5 p-2 ">
