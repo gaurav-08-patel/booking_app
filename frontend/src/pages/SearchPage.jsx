@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchContext } from "../contexts/SearchContext";
 import { useQuery } from "@tanstack/react-query";
 import SearchResultsCard from "../components/SearchResultsCard";
@@ -7,6 +7,9 @@ import Pagination from "../components/Pagination";
 const SearchPage = () => {
     const search = useSearchContext();
     const [page, setPage] = useState(1);
+
+    //to make sure the page is reset when the search is changed
+    useEffect(() => setPage(1), [search]);
     // console.log(search);
     const searchParams = new URLSearchParams();
     searchParams.append("destination", search.destination || "");
@@ -25,8 +28,8 @@ const SearchPage = () => {
         return responseBody;
     }
 
-    const { data } = useQuery({
-        queryKey: ["searchHotels", searchParams, page],
+    const { data, isLoading } = useQuery({
+        queryKey: ["searchHotels", search, page],
         queryFn: () => searchHotels(searchParams),
     });
 
@@ -45,9 +48,13 @@ const SearchPage = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                    {data?.hotels.map((hotel) => (
-                        <SearchResultsCard hotel={hotel} key={hotel._id} />
-                    ))}
+                    {isLoading ? (
+                        <div className="text-center">Loading...</div>
+                    ) : (
+                        data?.hotels.map((hotel) => (
+                            <SearchResultsCard hotel={hotel} key={hotel._id} />
+                        ))
+                    )}
                 </div>
                 <div className="flex justify-center mt-auto">
                     <Pagination
