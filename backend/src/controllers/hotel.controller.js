@@ -143,7 +143,7 @@ export const updateHotel = async (req, res) => {
 
 export const searchHotels = async (req, res) => {
     const query = constructSearchQuery(req.query);
-    const sortOption = {};
+    let sortOption = {};
 
     switch (req.query.sortOption) {
         case "priceLowToHigh":
