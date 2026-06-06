@@ -191,8 +191,8 @@ function constructSearchQuery(query) {
 
     if (query.destination) {
         searchQuery.$or = [
-            { city: { $regex: query.destination, $options: "i" } },
-            { country: { $regex: query.destination, $options: "i" } },
+            { city: { $regex: query.destination.trim(), $options: "i" } },
+            { country: { $regex: query.destination.trim(), $options: "i" } },
         ];
     }
 
