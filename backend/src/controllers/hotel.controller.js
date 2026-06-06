@@ -142,21 +142,39 @@ export const updateHotel = async (req, res) => {
 };
 
 export const searchHotels = async (req, res) => {
+    const query = constructSearchQuery(req.query);
+    console.log(query);
+    const sortOption = {};
+
+    switch (req.query.sortOption) {
+        case "priceLowToHigh":
+            sortOption = { pricePerNight: 1 };
+            break;
+        case "priceHighToLow":
+            sortOption = { pricePerNight: -1 };
+            break;
+        case "starRating":
+            sortOption = { starRating: -1 };
+            break;
+    }
+
     try {
         const pageSize = 6;
         const pageNumber = parseInt(req.query.page) || 1;
         const skip = (pageNumber - 1) * pageSize;
 
-        const hotels = await Hotel.find({}).skip(skip).limit(pageSize);
+        const hotels = await Hotel.find(query).sort(sortOption).skip(skip).limit(pageSize);
 
-        const totalPages = Math.ceil((await Hotel.countDocuments()) / pageSize);
+        const totalPages = Math.ceil(
+            (await Hotel.countDocuments(query)) / pageSize,
+        );
 
         res.status(200).json({
             hotels,
             pagination: {
                 currentPage: pageNumber,
                 totalPages,
-                totalHotels: await Hotel.countDocuments(),
+                totalHotels: await Hotel.countDocuments(query),
             },
         });
     } catch (error) {
@@ -167,3 +185,58 @@ export const searchHotels = async (req, res) => {
         });
     }
 };
+
+function constructSearchQuery(query) {
+    const searchQuery = {};
+
+    if (query.destination) {
+        searchQuery.$or = [
+            { city: { $regex: query.destination, $options: "i" } },
+            { country: { $regex: query.destination, $options: "i" } },
+        ];
+    }
+
+
+    if (query.adultCount) {
+        searchQuery.adultCount = {
+            $gte: parseInt(query.adultCount),
+        };
+    }
+
+    if (query.childCount) {
+        searchQuery.childCount = {
+            $gte: parseInt(query.childCount),
+        };
+    }
+
+    if (query.facilities) {
+        searchQuery.facilities = {
+            $all: Array.isArray(query.facilities)
+                ? query.facilities
+                : [query.facilities],
+        };
+    }
+
+    if (query.types) {
+        searchQuery.type = {
+            $in: Array.isArray(query.types) ? query.types : [query.types],
+        };
+    }
+
+    if (query.starRating) {
+        let startRating = Array.isArray(query.starRating)
+            ? query.starRating.map((rating) => parseInt(rating))
+            : [parseInt(query.starRating)];
+        searchQuery.starRating = {
+            $in: startRating,
+        };
+    }
+
+    if (query.maxPrince) {
+        searchQuery.pricePerNight = {
+            $lte: parseInt(query.maxPrince),
+        };
+    }
+
+    return searchQuery;
+}
