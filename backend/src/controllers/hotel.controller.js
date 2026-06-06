@@ -143,7 +143,6 @@ export const updateHotel = async (req, res) => {
 
 export const searchHotels = async (req, res) => {
     const query = constructSearchQuery(req.query);
-    console.log(query);
     const sortOption = {};
 
     switch (req.query.sortOption) {
@@ -232,9 +231,9 @@ function constructSearchQuery(query) {
         };
     }
 
-    if (query.maxPrince) {
+    if (query.maxPrice) {
         searchQuery.pricePerNight = {
-            $lte: parseInt(query.maxPrince),
+            $lte: parseInt(query.maxPrice),
         };
     }
 
