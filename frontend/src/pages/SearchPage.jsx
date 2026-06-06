@@ -3,10 +3,17 @@ import { useSearchContext } from "../contexts/SearchContext";
 import { useQuery } from "@tanstack/react-query";
 import SearchResultsCard from "../components/SearchResultsCard";
 import Pagination from "../components/Pagination";
+import SearchFilters from "../components/SearchFilters";
 
 const SearchPage = () => {
     const search = useSearchContext();
     const [page, setPage] = useState(1);
+    const [filters, setFilters] = useState({
+        selectedStars: [],
+        selectedHotelsType: [],
+        selectedFacilities: [],
+        maxPrice: null,
+    });
 
     //to make sure the page is reset when the search is changed
     useEffect(() => setPage(1), [search]);
@@ -19,6 +26,28 @@ const SearchPage = () => {
     searchParams.append("childCount", search.childCount.toString() || "");
     searchParams.append("page", page.toString() || "");
 
+    if (filters.selectedStars.length > 0) {
+        filters.selectedStars.forEach((star) => {
+            searchParams.append("starRating", star);
+        });
+    }
+
+    if (filters.selectedHotelsType.length > 0) {
+        filters.selectedHotelsType.forEach((type) => {
+            searchParams.append("type", type);
+        });
+    }
+
+    if (filters.selectedFacilities.length > 0) {
+        filters.selectedFacilities.forEach((facility) => {
+            searchParams.append("facilities", facility);
+        });
+    }
+
+    if (filters.maxPrice) {
+        searchParams.append("maxPrice", filters.maxPrice);
+    }
+
     async function searchHotels(searchParams) {
         let response = await fetch(
             `${import.meta.env.VITE_API_BASE_URL}/api/hotel/search?${searchParams}`,
@@ -29,17 +58,13 @@ const SearchPage = () => {
     }
 
     const { data, isLoading } = useQuery({
-        queryKey: ["searchHotels", search, page],
+        queryKey: ["searchHotels", search, page, filters],
         queryFn: () => searchHotels(searchParams),
     });
 
     return (
         <div className="grid grid-cols-[250px_1fr] max-md:grid-cols-1 gap-5 p-2 ">
-            <div className="border border-slate-300 p-4 rounded sticky top-10 h-fit">
-                <h1 className="text-lg font-semibold mb-3 border-b border-slate-300 pb-1">
-                    Filter By :
-                </h1>
-            </div>
+            <SearchFilters filters={filters} setFilters={setFilters}/>
             <div className="flex flex-col gap-1">
                 <div className="flex justify-between items-center mb-3 border-b border-slate-300 pb-1">
                     <div className="text-lg font-bold ">
